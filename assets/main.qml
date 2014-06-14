@@ -15,12 +15,32 @@
  */
 
 import bb.cascades 1.2
+import bb.cascades.pickers 1.0
 
 Page {
+    property bool pickermode
     attachedObjects: [
         ComponentDefinition {
             id: helpSheetDefinition
             HelpSheet {
+            }
+        },
+        ComponentDefinition {
+            id: settingsSheetDefinition
+            SettingsSheet {
+            }
+        },
+        FilePicker {
+            id: picker
+            property string selectedFile
+            title: "File Picker"
+            mode: FilePickerMode.Picker
+            type: FileType.Other
+            viewMode: FilePickerViewMode.Default
+            sortBy: FilePickerSortFlag.Default
+            sortOrder: FilePickerSortOrder.Default
+            onFileSelected: {
+                selectedFile = selectedFiles[0]
             }
         }
     ] 
@@ -29,6 +49,12 @@ Page {
             onTriggered: {
                 var help = helpSheetDefinition.createObject()
                 help.open();
+            }
+        }
+        settingsAction: SettingsActionItem {
+            onTriggered: {
+                var settings = settingsSheetDefinition.createObject()
+                settings.open();
             }
         }
     }
@@ -51,27 +77,45 @@ Page {
                 text: "MD4"
                 horizontalAlignment: HorizontalAlignment.Left
                 onClicked: {
-                    hashCalculateMd4.calculateHash(hashinput.text)
-                    hashoutput.text = hashCalculateMd4.getHash()
-                    hashoutput_label.text = "Hashed output (MD4):"
+                    hashoutput_label.text = "Hashed output (MD4):";
+                    if (pickermode == false){
+                        hashCalculateMd4.calculateHash(hashinput.text);
+                        hashoutput.text = hashCalculateMd4.getHash();
+                    }
+                    else {
+                        hashCalculateMd4.calculateFileHash(picker.selectedFile);
+                        hashoutput.text = hashCalculateMd4.getHash();
+                    }
                 }
             }
             Button {
                 text: "SHA-1"
                 horizontalAlignment: HorizontalAlignment.Center
                 onClicked: {
-                    hashCalculateSha.calculateHash(hashinput.text)
-                    hashoutput.text = hashCalculateSha.getHash()
-                    hashoutput_label.text = "Hashed output (SHA-1):"
+                    hashoutput_label.text = "Hashed output (SHA-1):";
+                    if (pickermode == false){
+                        hashCalculateSha.calculateHash(hashinput.text);
+                        hashoutput.text = hashCalculateSha.getHash();
+                    }
+                    else {
+                        hashCalculateSha.calculateFileHash(picker.selectedFile);
+                        hashoutput.text = hashCalculateSha.getHash();
+                    }
                 }  
             }
             Button {
                 text: "MD5"
                 horizontalAlignment: HorizontalAlignment.Right
                 onClicked: {
-                    hashCalculateMd5.calculateHash(hashinput.text)
-                    hashoutput.text = hashCalculateMd5.getHash()
-                    hashoutput_label.text = "Hashed output (MD5):"
+                    hashoutput_label.text = "Hashed output (MD5):";
+                    if (pickermode == false ){
+                        hashCalculateMd5.calculateHash(hashinput.text);
+                        hashoutput.text = hashCalculateMd5.getHash();
+                    }
+                    else {
+                        hashCalculateMd5.calculateFileHash(picker.selectedFile);
+                        hashoutput.text = hashCalculateMd5.getHash();
+                    }
                 }  
             }
         }
@@ -82,7 +126,22 @@ Page {
         TextArea {
             id: hashoutput
             text: ""
-            editable: false 
+            editable: false
+        }
+        Button {
+            horizontalAlignment: HorizontalAlignment.Center
+            text: "Choose a file"
+            onClicked: {
+                pickermode = true;
+                picker.open();
+            }
+        }
+        Label {
+            id: resultLabel
+            horizontalAlignment: HorizontalAlignment.Center
+            text: qsTr("Selected file: %1").arg(picker.selectedFile)
+            multiline: true
+            visible: (picker.selectedFile != "")
         }
     }
 }

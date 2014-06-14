@@ -18,18 +18,45 @@
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
+#include <bb/cascades/pickers/FilePicker>
+#include <bb/cascades/Page>
+#include <bb/cascades/Window>
 
 #include <QCryptographicHash>
+#include <QtCore>
+#include <QLocale>
+#include <QTranslator>
 
-#include "hashcalculatesha.h"
-#include "hashcalculatemd5.h"
-#include "hashcalculatemd4.h"
+#include <Qt/qdeclarativedebug.h>
+
+#include "Settings.hpp"
+#include "hashcalculatesha.hpp"
+#include "hashcalculatemd5.hpp"
+#include "hashcalculatemd4.hpp"
 
 using namespace bb::cascades;
 
+QString getValue() {
+Settings settings;
+// use "theme" key for property showing what theme to use on application start
+return settings.getValueFor("theme", "");
+}
+
+void myMessageOutput(QtMsgType type, const char* msg) {
+Q_UNUSED(type);
+   fprintf(stdout, "%s\n", msg);
+   fflush(stdout);
+}
+
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
+    qputenv("CASCADES_THEME", getValue().toUtf8());
+
     Application app(argc, argv);
+
+    #ifndef QT_NO_DEBUG
+    qInstallMsgHandler(myMessageOutput);
+    #endif
 
     //SHA-1
     HashCalculateSha*ihashcalcsha =  new HashCalculateSha();
@@ -40,6 +67,9 @@ Q_DECL_EXPORT int main(int argc, char **argv)
     //MD4
     HashCalculateMd4*ihashcalcmd4 =  new HashCalculateMd4();
     QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("hashCalculateMd4", ihashcalcmd4);
+    //Theme settings
+    Settings *settings = new Settings();
+    QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("Settings", settings);
 
     // Create the Application UI object, this is where the main.qml file
     // is loaded and the application scene is set.

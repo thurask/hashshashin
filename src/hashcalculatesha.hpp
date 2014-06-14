@@ -1,10 +1,3 @@
-/*
- * hashcalculatesha.h
- *
- *  Created on: Jun 6, 2014
- *      Author: thura_000
- */
-
 #ifndef HASHCALCULATESHA_H_
 #define HASHCALCULATESHA_H_
 
@@ -16,6 +9,7 @@ class HashCalculateSha : public QObject
 public:
     explicit HashCalculateSha(QObject *parent = 0);
     Q_INVOKABLE void calculateHash(const QString& aOriginalText );
+    Q_INVOKABLE void calculateFileHash(QString fileName);
 
 signals:
 
@@ -24,7 +18,6 @@ public slots:
        void SetHash(const QString& aHashValue);
 public:
        QString iHashValue;
-
 };
 
 #endif /* HASHCALCULATESHA_H_ */

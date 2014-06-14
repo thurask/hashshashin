@@ -1,12 +1,6 @@
-/*
- * hashcalculatemd4.cpp
- *
- *  Created on: Jun 6, 2014
- *      Author: thura_000
- */
-
-#include "hashcalculatemd4.h"
+#include "hashcalculatemd4.hpp"
 #include <QCryptographicHash>
+#include <QFile>
 #include "QDebug"
 HashCalculateMd4::HashCalculateMd4(QObject *parent) :
     QObject(parent)
@@ -21,6 +15,18 @@ void HashCalculateMd4::calculateHash(const QString& aOriginalText )
  SetHash(QString(hash.result().toHex()));
 }
 
+void HashCalculateMd4::calculateFileHash(QString fileName)
+{
+ QCryptographicHash filehash(QCryptographicHash::Md4);
+ QFile file(fileName);
+ file.open(QFile::ReadOnly);
+ while(!file.atEnd()){
+     filehash.addData(file.read(8192));
+ }
+ QByteArray filehasharray = filehash.result();
+ SetHash(QString(filehasharray.toHex()));
+}
+
 void HashCalculateMd4::SetHash(const QString& aHashValue)
 {
  iHashValue = aHashValue;
@@ -30,5 +36,3 @@ QString HashCalculateMd4::getHash()
 {
  return iHashValue;
 }
-
-

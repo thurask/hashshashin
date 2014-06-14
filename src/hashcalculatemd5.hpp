@@ -1,12 +1,5 @@
-/*
- * hashcalculatemd5.h
- *
- *  Created on: Jun 6, 2014
- *      Author: thura_000
- */
-
-#ifndef HASHCALCULATEMD5_H_
-#define HASHCALCULATEMD5_H_
+#ifndef HASHCALCULATEMD5_HPP_
+#define HASHCALCULATEMD5_HPP_
 
 #include <QObject>
 
@@ -16,6 +9,7 @@ class HashCalculateMd5 : public QObject
 public:
     explicit HashCalculateMd5(QObject *parent = 0);
     Q_INVOKABLE void calculateHash(const QString& aOriginalText );
+    Q_INVOKABLE void calculateFileHash(QString fileName);
 
 signals:
 
@@ -24,7 +18,6 @@ public slots:
        void SetHash(const QString& aHashValue);
 public:
        QString iHashValue;
-
 };
 
-#endif /* HASHCALCULATEMD5_H_ */
+#endif /* HASHCALCULATEMD5_HPP_ */

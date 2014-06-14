@@ -136,6 +136,7 @@ Page {
             Button {
                 text: "Choose a file"
                 onClicked: {
+                        resultLabel.visible = true;
                         pickermode = true;
                         picker.open();
                         }
@@ -153,7 +154,6 @@ Page {
             horizontalAlignment: HorizontalAlignment.Center
             text: qsTr("Selected file: %1").arg(picker.selectedFile)
             multiline: true
-            visible: (picker.selectedFile != "")
         }
     }
 }

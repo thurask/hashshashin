@@ -128,12 +128,24 @@ Page {
             text: ""
             editable: false
         }
-        Button {
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.LeftToRight
+            }
             horizontalAlignment: HorizontalAlignment.Center
-            text: "Choose a file"
-            onClicked: {
-                pickermode = true;
-                picker.open();
+            Button {
+                text: "Choose a file"
+                onClicked: {
+                        pickermode = true;
+                        picker.open();
+                        }
+                    }
+            Button {
+               text: "Text mode" 
+               onClicked: {
+                   pickermode = false;
+                   resultLabel.visible = false;
+               }
             }
         }
         Label {

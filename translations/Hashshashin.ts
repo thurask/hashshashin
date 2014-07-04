@@ -7,5 +7,9 @@
         <source>Selected file: %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hashshashin %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -24,12 +24,10 @@
 
 #include <QCryptographicHash>
 #include <QtCore>
-#include <QLocale>
-#include <QTranslator>
-
-#include <Qt/qdeclarativedebug.h>
 
 #include "Settings.hpp"
+#include "Clipboard.hpp"
+#include "SaveFile.hpp"
 #include "hashcalculatesha.hpp"
 #include "hashcalculatemd5.hpp"
 #include "hashcalculatemd4.hpp"
@@ -61,15 +59,26 @@ Q_DECL_EXPORT int main(int argc, char **argv)
     //SHA-1
     HashCalculateSha*ihashcalcsha =  new HashCalculateSha();
     QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("hashCalculateSha", ihashcalcsha);
+
     //MD5
     HashCalculateMd5*ihashcalcmd5 =  new HashCalculateMd5();
     QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("hashCalculateMd5", ihashcalcmd5);
+
     //MD4
     HashCalculateMd4*ihashcalcmd4 =  new HashCalculateMd4();
     QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("hashCalculateMd4", ihashcalcmd4);
+
     //Theme settings
     Settings *settings = new Settings();
     QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("Settings", settings);
+
+    //Clipboard
+    Clipboard *clipboard = new Clipboard();
+    QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("Clipboard", clipboard);
+
+    //File downloader
+    SaveFile *savefile = new SaveFile();
+    QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("savefile", savefile);
 
     // Create the Application UI object, this is where the main.qml file
     // is loaded and the application scene is set.

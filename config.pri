@@ -4,10 +4,28 @@ BASEDIR = $$quote($$_PRO_FILE_PWD_)
 device {
     CONFIG(debug, debug|release) {
         profile {
+            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            LIBS += -lbbcascadespickers \
+                -lbbsystem
+
             CONFIG += \
                 config_pri_assets \
                 config_pri_source_group1
         } else {
+            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            LIBS += -lbbcascadespickers \
+                -lbbsystem
+
             CONFIG += \
                 config_pri_assets \
                 config_pri_source_group1
@@ -17,6 +35,15 @@ device {
 
     CONFIG(release, debug|release) {
         !profile {
+            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            LIBS += -lbbcascadespickers \
+                -lbbsystem
+
             CONFIG += \
                 config_pri_assets \
                 config_pri_source_group1
@@ -27,6 +54,15 @@ device {
 simulator {
     CONFIG(debug, debug|release) {
         !profile {
+            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/cascades/pickers) \
+                $$quote(${QNX_TARGET}/usr/include/bb/system)
+
+            LIBS += -lbbcascadespickers \
+                -lbbsystem
+
             CONFIG += \
                 config_pri_assets \
                 config_pri_source_group1
@@ -38,17 +74,15 @@ config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/HelpSheet.qml) \
         $$quote($$BASEDIR/assets/SettingsSheet.qml) \
-        $$quote($$BASEDIR/assets/icons/icon_110.png) \
         $$quote($$BASEDIR/assets/icons/icon_114.png) \
-        $$quote($$BASEDIR/assets/icons/icon_144.png) \
-        $$quote($$BASEDIR/assets/icons/icon_90.png) \
         $$quote($$BASEDIR/assets/icons/icon_94.png) \
-        $$quote($$BASEDIR/assets/icons/icon_96.png) \
         $$quote($$BASEDIR/assets/main.qml)
 }
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/Clipboard.cpp) \
+        $$quote($$BASEDIR/src/SaveFile.cpp) \
         $$quote($$BASEDIR/src/Settings.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/hashcalculatemd4.cpp) \
@@ -57,6 +91,8 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
+        $$quote($$BASEDIR/src/Clipboard.hpp) \
+        $$quote($$BASEDIR/src/SaveFile.hpp) \
         $$quote($$BASEDIR/src/Settings.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp) \
         $$quote($$BASEDIR/src/hashcalculatemd4.hpp) \

@@ -1,23 +1,24 @@
-#ifndef HASHCALCULATESHA_H_
-#define HASHCALCULATESHA_H_
+#ifndef HASHCALCULATESHA_HPP_
+#define HASHCALCULATESHA_HPP_
 
-#include <QObject>
+#include <QtCore>
 
 class HashCalculateSha : public QObject
 {
     Q_OBJECT
 public:
     explicit HashCalculateSha(QObject *parent = 0);
+    QString iHashValue;
     Q_INVOKABLE void calculateHash(const QString& aOriginalText );
     Q_INVOKABLE void calculateFileHash(QString fileName);
 
-signals:
+    signals:
+    void hashStarted();
+    void hashComplete();
 
 public slots:
        QString getHash();
        void SetHash(const QString& aHashValue);
-public:
-       QString iHashValue;
 };
 
-#endif /* HASHCALCULATESHA_H_ */
+#endif /* HASHCALCULATESHA_HPP_ */

@@ -22,7 +22,6 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/Window>
 
-#include <QCryptographicHash>
 #include <QtCore>
 
 #include "Settings.hpp"

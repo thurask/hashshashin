@@ -18,9 +18,21 @@ import bb.cascades 1.2
 import bb.cascades.pickers 1.0
 import bb.system 1.2
 
+import "js/functions.js" as JScript
+
 Page {
+    id:mainpage
+    function startSpinning() {
+        spinnyThing.start();
+    }
+    function stopSpinning() {
+        spinnyThing.stop();
+    }
     property bool pickermode
     property string hashmode
+    property string savedsha
+    property string savedmd4
+    property string savedmd5
     attachedObjects: [
         ComponentDefinition {
             id: helpSheetDefinition
@@ -42,7 +54,10 @@ Page {
             sortBy: FilePickerSortFlag.Default
             sortOrder: FilePickerSortOrder.Default
             onFileSelected: {
-                selectedFile = selectedFiles[0]
+                selectedFile = selectedFiles[0];
+            }
+            onSelectedFileChanged: {
+                JScript.clean();
             }
         },
         SystemToast {
@@ -85,6 +100,8 @@ Page {
                 id: togglebutton
                 verticalAlignment: VerticalAlignment.Center
                 onCheckedChanged: {
+                    JScript.clean();
+                    picker.selectedFile = "";
                     if (checked == true){
                         pickermode = true;
                     }
@@ -98,6 +115,7 @@ Page {
         }
         Container {
             topPadding: 20.0
+            bottomPadding: 20.0
             id: textmodecontainer
             visible: (pickermode == false)
             Label {
@@ -106,6 +124,11 @@ Page {
             TextArea {
                 id: hashinput
                 hintText: "Text to be hashed"
+                onTextChanged: {
+                    savedmd4 = "";
+                    savedmd5 = "";
+                    savedsha = "";
+                }
             }
         }
         Container {
@@ -134,20 +157,32 @@ Page {
                 horizontalAlignment: HorizontalAlignment.Center
                 text: qsTr("Selected file: %1").arg(picker.selectedFile)
                 multiline: true
-            }
-        }
-        Container {
-            topPadding: 50.0
-            layout: StackLayout {
-                orientation: LayoutOrientation.TopToBottom
+                onTextChanged: {
+                    savedmd4 = "";
+                    savedmd5 = "";
+                    savedsha = "";
+                }
             }
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
                 text: "Be patient with large files"
-                visible: (pickermode == true)
+            }
+        }
+        Container {
+            topPadding: 40.0
+            layout: StackLayout {
+                orientation: LayoutOrientation.TopToBottom
             }
             Divider {
+            }
+            Container {
+                horizontalAlignment: HorizontalAlignment.Center
+                ActivityIndicator {
+                    id:spinnyThing
+                    preferredWidth: 150
+                    preferredHeight: 150
+                }
             }
             Container {
                 topPadding: 10.0
@@ -158,49 +193,19 @@ Page {
                 Button {
                     text: "MD4"
                     onClicked: {
-                        hashmode = "MD4";
-                        hashoutput_label.text = "Hashed output (MD4):";
-                        hashoutput.text = "";
-                        if (pickermode == false){
-                            hashCalculateMd4.calculateHash(hashinput.text);
-                            hashoutput.text = hashCalculateMd4.getHash();
-                        }
-                        else {
-                            hashCalculateMd4.calculateFileHash(picker.selectedFile);
-                            hashoutput.text = hashCalculateMd4.getHash();
-                        }
+                        JScript.MD4Hash();
                     }
                 }
                 Button {
                     text: "SHA-1"
                     onClicked: {
-                        hashmode = "SHA1"
-                        hashoutput_label.text = "Hashed output (SHA-1):";
-                        hashoutput.text = "";
-                        if (pickermode == false){
-                            hashCalculateSha.calculateHash(hashinput.text);
-                            hashoutput.text = hashCalculateSha.getHash();
-                        }
-                        else {
-                            hashCalculateSha.calculateFileHash(picker.selectedFile);
-                            hashoutput.text = hashCalculateSha.getHash();
-                        }
+                        JScript.SHA1Hash();
                     }
                 }
                 Button {
                     text: "MD5"
                     onClicked: {
-                        hashmode = "MD5"
-                        hashoutput_label.text = "Hashed output (MD5):";
-                        hashoutput.text = "";
-                        if (pickermode == false ){
-                            hashCalculateMd5.calculateHash(hashinput.text);
-                            hashoutput.text = hashCalculateMd5.getHash();
-                        }
-                        else {
-                            hashCalculateMd5.calculateFileHash(picker.selectedFile);
-                            hashoutput.text = hashCalculateMd5.getHash();
-                        }
+                        JScript.MD5Hash();
                     }
                 }
             }
@@ -251,5 +256,13 @@ Page {
                 }
             }
         }
+    }
+    onCreationCompleted: {
+        hashCalculateMd4.hashStarted.connect(mainpage.startSpinning());
+        hashCalculateMd4.hashComplete.connect(mainpage.stopSpinning());
+        hashCalculateMd5.hashStarted.connect(mainpage.startSpinning());
+        hashCalculateMd5.hashComplete.connect(mainpage.stopSpinning());
+        hashCalculateSha.hashStarted.connect(mainpage.startSpinning());
+        hashCalculateSha.hashComplete.connect(mainpage.stopSpinning());
     }
 }

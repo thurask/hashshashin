@@ -76,6 +76,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/SettingsSheet.qml) \
         $$quote($$BASEDIR/assets/icons/icon_114.png) \
         $$quote($$BASEDIR/assets/icons/icon_94.png) \
+        $$quote($$BASEDIR/assets/js/functions.js) \
         $$quote($$BASEDIR/assets/main.qml)
 }
 
@@ -116,7 +117,10 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/*.qs) \
         $$quote($$BASEDIR/../assets/icons/*.qml) \
         $$quote($$BASEDIR/../assets/icons/*.js) \
-        $$quote($$BASEDIR/../assets/icons/*.qs)
+        $$quote($$BASEDIR/../assets/icons/*.qs) \
+        $$quote($$BASEDIR/../assets/js/*.qml) \
+        $$quote($$BASEDIR/../assets/js/*.js) \
+        $$quote($$BASEDIR/../assets/js/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \
